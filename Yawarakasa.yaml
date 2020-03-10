@@ -10,10 +10,8 @@ host: "localhost:8080"
 tags:
   - name: "user"
     description: "ユーザ関連API"
-  - name: "gacha"
-    description: "ガチャ関連API"
-  - name: "character"
-    description: "キャラクター関連API"
+  - name: "yawarakasa"
+    description: "柔らかさ関連API"
 schemes:
   - "http"
 paths:
@@ -23,7 +21,7 @@ paths:
         - "user"
       summary: "ユーザ情報作成API"
       description: "ユーザ情報を作成します。\n
-      ユーザの名前情報をリクエストで受け取り、ユーザIDと認証用のトークンを生成しデータベースへ保存します。"
+      ユーザの名前・性別情報をリクエストで受け取り，ユーザID・性別と認証用のトークンを生成しデータベースへ保存します．"
       consumes:
         - "application/json"
       produces:
@@ -46,8 +44,8 @@ paths:
       tags:
         - "user"
       summary: "ユーザ情報取得API"
-      description: "ユーザ情報を取得します。\n
-      ユーザの認証と特定の処理はリクエストヘッダのx-tokenを読み取ってデータベースに照会をします。"
+      description: "ユーザ情報を取得します．\n
+      ユーザの認証と特定の処理はリクエストヘッダのx-tokenを読み取ってデータベースに照会をします．"
       consumes:
         - "application/json"
       produces:
@@ -69,8 +67,8 @@ paths:
       tags:
         - "user"
       summary: "ユーザ情報更新API"
-      description: "ユーザ情報の更新をします。\n
-      初期実装では名前の更新を行います。"
+      description: "ユーザ情報の更新をします．\n
+      初期実装では名前の更新を行います．"
       consumes:
         - "application/json"
       produces:
@@ -91,44 +89,38 @@ paths:
         200:
           "description": "A successful response."
 
-  /gacha/draw:
+  /yawarakasa/create:
     post:
       tags:
-        - "gacha"
-      summary: "ガチャ実行API"
-      description: "ガチャを引いてキャラクターを取得する処理を実装します。\n
-      獲得したキャラクターはユーザ所持キャラクターテーブルへ保存します。\n
-      同じ種類のキャラクターでもユーザは複数所持することができます。\n
-      \n
-      キャラクターの確率は等倍ではなく、任意に変更できるようテーブルを設計しましょう。"
+        - "yawarakasa"
+      summary: "やわらかさ情報作成API"
+      description: "ユーザのやわらかさ・日付をリクエストで受け取り，ユーザテーブルへ保存します．\n
+      ユーザは日にちごとに複数やわらかさの情報を所持することができます．\n
+      \n"
       consumes:
         - "application/json"
       produces:
         - "application/json"
       parameters:
-        - in: "header"
-          name: "x-token"
-          description: "認証トークン"
-          required: true
-          type: "string"
         - in: "body"
           name: "body"
           description: "Request Body"
           required: true
           schema:
-            $ref: "#/definitions/GachaDrawRequest"
+            $ref: "#/definitions/YawarakasaCreateRequest"
       responses:
         200:
           "description": "A successful response."
           "schema":
-            "$ref": "#/definitions/GachaDrawResponse"
+            "$ref": "#/definitions/YawarakasaCreateResponse"
 
-  /character/list:
+  /yawarakasa/get:
     get:
       tags:
-        - "character"
-      summary: "ユーザ所持キャラクター一覧取得API"
-      description: "ユーザが所持しているキャラクター一覧情報を取得します。"
+        - "yawarakasa"
+      summary: "やわらかさ情報取得API"
+      description: "やわらかさ情報を取得します．\n
+      x-tokenと日付けを読み取ってやわらかさデータベースに照会をします．"
       consumes:
         - "application/json"
       produces:
@@ -139,11 +131,17 @@ paths:
           description: "認証トークン"
           required: true
           type: "string"
+        - in: "header"
+          name: "data"
+          description: "日付"
+          required: true
+          type: "integer"
       responses:
         200:
           "description": "A successful response."
           "schema":
-            "$ref": "#/definitions/CharacterListResponse"
+            "$ref": "#/definitions/YawarakasaGetResponse"
+
 
 definitions:
   UserCreateRequest:
@@ -152,6 +150,9 @@ definitions:
       name:
         type: "string"
         description: "ユーザ名"
+      sex:
+        type: "string"
+        description: "性別"
   UserCreateResponse:
     type: "object"
     properties:
@@ -170,44 +171,25 @@ definitions:
       name:
         type: "string"
         description: "ユーザ名"
-  GachaDrawRequest:
+
+  YawarakasaCreateRequest:
     type: "object"
     properties:
-      times:
+      yawarakasa:
         type: "integer"
-        description: "実行回数"
-  GachaDrawResponse:
+        description: "やわらかさ"
+      date:
+        type: "integer"
+        description: "日付"
+  YawarakasaCreateResponse:
     type: "object"
     properties:
-      results:
-        type: "array"
-        items:
-          $ref: "#/definitions/GachaResult"
-  GachaResult:
+      token:
+        type: "string"
+        description: "クライアント側で保存するトークン"
+  YawarakasaGetResponse:
     type: "object"
     properties:
-      characterID:
-        type: "string"
-        description: "キャラクターID"
-      name:
-        type: "string"
-        description: "キャラクター名"
-  CharacterListResponse:
-    type: "object"
-    properties:
-      characters:
-        type: "array"
-        items:
-          $ref: "#/definitions/UserCharacter"
-  UserCharacter:
-    type: "object"
-    properties:
-      userCharacterID:
-        type: "string"
-        description: "ユニークID"
-      characterID:
-        type: "string"
-        description: "キャラクターID"
-      name:
-        type: "string"
-        description: "キャラクター名"
+      yawarakasa:
+        type: "integer"
+        description: "やわらかさ"
