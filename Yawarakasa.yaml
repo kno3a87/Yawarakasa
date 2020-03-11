@@ -177,6 +177,9 @@ definitions:
   YawarakasaCreateRequest:
     type: "object"
     properties:
+      token:
+          type: "string"
+          description: "認証トークン"
       yawarakasa:
         type: "integer"
         description: "やわらかさ"
