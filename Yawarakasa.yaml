@@ -131,8 +131,18 @@ paths:
           required: true
           type: "string"
         - in: "query"
-          name: "data"
-          description: "日付"
+          name: "year"
+          description: "年"
+          required: true
+          type: "integer"
+        - in: "query"
+          name: "month"
+          description: "年"
+          required: true
+          type: "integer"
+        - in: "query"
+          name: "day"
+          description: "年"
           required: true
           type: "integer"
       responses:
