@@ -111,8 +111,7 @@ paths:
       responses:
         200:
           "description": "A successful response."
-          "schema":
-            "$ref": "#/definitions/YawarakasaCreateResponse"
+
 
   /yawarakasa/get:
     get:
@@ -190,12 +189,6 @@ definitions:
       day:
         type: "integer"
         description: "日"
-  YawarakasaCreateResponse:
-    type: "object"
-    properties:
-      token:
-        type: "string"
-        description: "クライアント側で保存するトークン"
   YawarakasaGetResponse:
     type: "object"
     properties:
