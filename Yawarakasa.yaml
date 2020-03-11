@@ -173,6 +173,9 @@ definitions:
       name:
         type: "string"
         description: "ユーザ名"
+      sex:
+        type: "string"
+        description: "性別"
 
   YawarakasaCreateRequest:
     type: "object"
