@@ -149,7 +149,9 @@ paths:
         200:
           "description": "A successful response."
           "schema":
-            "$ref": "#/definitions/YawarakasaGetResponse"
+            type: array
+            items:
+              "$ref": "#/definitions/YawarakasaGetResponse"
 
 
 definitions:
