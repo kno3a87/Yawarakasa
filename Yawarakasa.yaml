@@ -126,12 +126,12 @@ paths:
       produces:
         - "application/json"
       parameters:
-        - in: "header"
+        - in: "query"
           name: "x-token"
           description: "認証トークン"
           required: true
           type: "string"
-        - in: "header"
+        - in: "query"
           name: "data"
           description: "日付"
           required: true
@@ -165,6 +165,9 @@ definitions:
       name:
         type: "string"
         description: "ユーザ名"
+      sex:
+        type: "string"
+        description: "性別"
   UserUpdateRequest:
     type: "object"
     properties:
