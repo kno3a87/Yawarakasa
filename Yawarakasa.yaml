@@ -165,8 +165,13 @@ paths:
         - "application/json"
       parameters:
         - in: "query"
-          name: "rank"
-          description: "ランキング取得"
+          name: "start"
+          description: "始まりの値"
+          required: true
+          type: "integer"
+        - in: "query"
+          name: "end"
+          description: "終わりの値"
           required: true
           type: "integer"
       responses:
