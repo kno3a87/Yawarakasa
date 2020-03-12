@@ -242,3 +242,15 @@ definitions:
       yawarakasa:
         type: "integer"
         description: "やわらかさ"
+      name:
+        type: "string"
+        description: "ユーザID"
+      year:
+        type: "integer"
+        description: "年"
+      month:
+        type: "integer"
+        description: "月"
+      day:
+        type: "integer"
+        description: "日"
