@@ -1,4 +1,4 @@
-# UserID, sex from user
+# user_id, sex from user
 
 # 性別女を探してみる
-select UserID from user where sex = 'f';
+select user_id from user where sex = 'f';

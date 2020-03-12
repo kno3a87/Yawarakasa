@@ -1,5 +1,5 @@
 create table user(
-  UserID varchar(255) NOT NULL,
-  Sex char(1),
+  user_id varchar(255) NOT NULL,
+  sex char(1),
   PRIMARY KEY (UserID)
 );
