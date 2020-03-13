@@ -4,5 +4,5 @@ create table yawarakasa(
   month int(2) NOT NULL,
   day int(2) NOT NULL,
   yawarakasa int(255),
-  PRIMARY KEY (UserID, year, month, day)
+  PRIMARY KEY (user_id, year, month, day)
 );
