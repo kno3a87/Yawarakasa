@@ -16,7 +16,7 @@ type User struct {
 // ユーザ情報を取得・表示
 func drawUser(w http.ResponseWriter, r *http.Request){
 
-  // クエリパラメータ取得（KunoとかmamaとかURLに打ってもらう）
+  // r.URL.RawQueryでクエリパラメータ取得（KunoとかmamaとかURLに打ってもらう）
   //fmt.Fprintf(w, "クエリ：%s\n", r.URL.RawQuery)  // debug用
 
   // rootで作ったのでパスワードなし
