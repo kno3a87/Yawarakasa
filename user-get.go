@@ -15,13 +15,22 @@ type User struct {
 
 // ユーザ情報を取得・表示
 func drawUser(w http.ResponseWriter, r *http.Request){
+
+  // クエリパラメータ取得（KunoとかmamaとかURLに打ってもらう）
+  fmt.Fprintf(w, "クエリ：%s\n", r.URL.RawQuery)
+
   // rootで作ったのでパスワードなし
   db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/YawarakasaApp")
   if err != nil {
     panic(err.Error())
   }
   defer db.Close()
-  rows, err := db.Query("select * from user where user_id = 'Kuno'")
+
+  // queryにクエリパラメータ代入
+  var query string
+  query = "select * from user where user_id = '" + r.URL.RawQuery + "'"
+  // println(query) // debug用
+  rows, err := db.Query(query)
 
   if err != nil {
     panic(err.Error())
@@ -48,13 +57,14 @@ func drawUser(w http.ResponseWriter, r *http.Request){
 }
 
 func hello(w http.ResponseWriter, r *http.Request){
-  fmt.Fprintf(w, "ユーザ情報をみるなら/user/get?id=???と入力してね")
+  fmt.Fprintf(w, "ユーザ情報をみるなら/user/get?***と入力してね")
   fmt.Println("Endpoint Hit: Hello")
 }
 
 func handleRequests() {
   http.HandleFunc("/", hello)
   http.HandleFunc("/user/get", drawUser)
+  // 8080ポートで起動
   log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
