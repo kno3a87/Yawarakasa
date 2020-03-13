@@ -17,7 +17,7 @@ type User struct {
 func drawUser(w http.ResponseWriter, r *http.Request){
 
   // クエリパラメータ取得（KunoとかmamaとかURLに打ってもらう）
-  fmt.Fprintf(w, "クエリ：%s\n", r.URL.RawQuery)
+  //fmt.Fprintf(w, "クエリ：%s\n", r.URL.RawQuery)  // debug用
 
   // rootで作ったのでパスワードなし
   db, err := sql.Open("mysql", "root:@tcp(127.0.0.1:3306)/YawarakasaApp")
