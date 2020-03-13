@@ -187,7 +187,7 @@ definitions:
   UserCreateRequest:
     type: "object"
     properties:
-      name:
+      user_id:
         type: "string"
         description: "ユーザ名"
       sex:
@@ -202,7 +202,7 @@ definitions:
   UserGetResponse:
     type: "object"
     properties:
-      name:
+      user_id:
         type: "string"
         description: "ユーザ名"
       sex:
@@ -211,7 +211,7 @@ definitions:
   UserUpdateRequest:
     type: "object"
     properties:
-      name:
+      user_id:
         type: "string"
         description: "ユーザ名"
       sex:
@@ -242,7 +242,7 @@ definitions:
       yawarakasa:
         type: "integer"
         description: "やわらかさ"
-      name:
+      user_id:
         type: "string"
         description: "ユーザID"
       year:
