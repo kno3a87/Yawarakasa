@@ -6,5 +6,6 @@ package main
 import "github.com/YawarakasaApp/pkg/api"
 
 func main() {
-    api.Start()
+  // api packageのStart関数呼び出し
+  api.Start()
 }
