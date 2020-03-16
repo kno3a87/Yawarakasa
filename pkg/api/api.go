@@ -1,4 +1,5 @@
 // エンドポイントの定義とサーバ起動
+// エンドポイント：特定のリソースに対して与えられた固有の一意なURIのこと
 
 package api
 
@@ -6,6 +7,8 @@ import (
   "fmt"
   _ "github.com/go-sql-driver/mysql"
   "net/http"
+
+  "github.com/YawarakasaApp/pkg/api/handler/user"
 )
 
 func Start() {
@@ -16,4 +19,6 @@ func Start() {
 
 func Handler(writer http.ResponseWriter, request *http.Request){
     fmt.Fprintf(writer, "Hello World!")
+    // エンドポイントの設定
+    http.HandleFunc("/user/get", HandlerPkg.GetUser).Methods("GET")
 }
