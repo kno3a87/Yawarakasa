@@ -21,5 +21,5 @@ func Handler(writer http.ResponseWriter, request *http.Request){
     fmt.Fprintf(writer, "Hello World!")
     // エンドポイントの設定
     // HandlerPkg　packageのGetUser関数呼び出し
-    http.HandleFunc("/user/get", HandlerPkg.GetUser).Methods("GET")
+    http.HandleFunc("/user/get", HandlerPkg.GetUser)
 }

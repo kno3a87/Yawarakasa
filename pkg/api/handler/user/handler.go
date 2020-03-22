@@ -4,7 +4,7 @@
 package HandlerPkg
 
 import (
-  "encoding/json"
+  //"encoding/json"
   "database/sql"
   "fmt"
   _ "github.com/go-sql-driver/mysql"
@@ -20,8 +20,6 @@ type User struct {
 var users []User
 
 func GetUser(w http.ResponseWriter, r *http.Request) {
-  // r.URL.RawQueryでクエリパラメータ取得（KunoとかmamaとかURLに打ってもらう）
-
   // json定義
   w.Header().Set("Content-Type", "application/json")
 
@@ -32,10 +30,10 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
   }
   defer db.Close()
 
+/*
   // queryにクエリパラメータ代入
   var query string
   query = "select * from user where user_id = '" + r.URL.RawQuery + "'"
-
   rows, err := db.Query(query)
 
   if err != nil {
@@ -62,7 +60,22 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
   if err != nil {
     panic(err.Error())
     return
-  }
+  }*/
+
+  //url := "https://jsonplaceholder.typicode.com/todos"
+  url := "" // ここなに？？？？？
+
+	request, err := http.NewRequest("GET", url, nil)
+	if err != nil{
+		//log.Fatal(err)
+	}
+
+	//クエリパラメータ
+	params := request.URL.Query()
+    params.Add("userId","1")
+    request.URL.RawQuery = params.Encode()
+
+	fmt.Println(request.URL.String()) //https://jsonplaceholder.typicode.com/todos?userId=1
 
   // Terminalにログ表示
   fmt.Println("Endpoint Hit: drawUser")
