@@ -54,16 +54,18 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
     err := rows.Scan(&user.user_id, &user.sex)
 
     // jsonエンコード
-    outputJson, err := json.Marshal(user.sex)
+    outputJson, err := json.Marshal(user)
     if err != nil {
       panic(err)
     }
+    //fmt.Fprintln(User)
     fmt.Fprint(w, string(outputJson))
 
     if err != nil {
       panic(err.Error())
       return
     }
+    fmt.Println(user)
   }
 
   // Terminalにログ表示
