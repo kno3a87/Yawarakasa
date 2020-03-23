@@ -41,9 +41,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
   params.Add("userId","Kuno") // 直接指定してみる
   request.URL.RawQuery = params.Encode()
 
-  // ブラウザにjson表示
-  //fmt.Fprintf(writer, )
-
   // Terminalにログ表示
   fmt.Println(params) // 'map[userId:[Kuno]]'
   fmt.Println(params["userId"]) // '[Kuno]'
@@ -51,16 +48,13 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 
 
   // MySQLからuserId=Kunoの情報取ってくる
-  var query_sentence string
-  query_sentence = "select * from user where user_id = '" + params["userId"] + "'"
-  rows, err := db.Query(query_sentence)
+  rows, err := db.Query("select * from user where user_id = ?", "Kuno")
   for rows.Next() {
     var user User
     err := rows.Scan(&user.user_id, &user.sex)
 
-    //json.NewEncoder(w).Encode(user)
     // jsonエンコード
-    outputJson, err := json.Marshal(&user)
+    outputJson, err := json.Marshal(user.sex)
     if err != nil {
       panic(err)
     }
@@ -70,8 +64,6 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
       panic(err.Error())
       return
     }
-    //fmt.Fprintf(w, "user_id : " + user.user_id)
-    //fmt.Fprintf(w, ", sex : " + user.sex)
   }
 
   // Terminalにログ表示
