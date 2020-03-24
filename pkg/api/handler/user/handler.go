@@ -12,8 +12,8 @@ import (
 )
 
 type User struct {
-  user_id string `json:"ユーザID"`
-  sex string `json:"性別"`
+  User_id string `json:"ユーザID"`
+  Sex string `json:"性別"`
 }
 
 // Init
@@ -51,7 +51,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
   rows, err := db.Query("select * from user where user_id = ?", "Kuno")
   for rows.Next() {
     var user User
-    err := rows.Scan(&user.user_id, &user.sex)
+    err := rows.Scan(&user.User_id, &user.Sex)
 
     // jsonエンコード
     outputJson, err := json.Marshal(user)
