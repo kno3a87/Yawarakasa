@@ -4,6 +4,7 @@
 package HandlerPkg
 
 import (
+  "context"
   "encoding/json"
   "database/sql"
   "fmt"
@@ -31,24 +32,41 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
   defer db.Close()
 
   url := ""
+
   request, err := http.NewRequest("GET", url, nil)
+  
+  // リクエストヘッダに代入
+  request.Header.Set("userId", "Kuno")
   if err != nil{
     //log.Fatal(err)
   }
 
+  // リクエストヘッダから取得してcontextに保存
+  // 空のコンテキスト作成
+  ctx := context.Background()
+  // コンテキストに代入
+  ctx = context.WithValue(ctx, "userId", request.Header.Get("userId"))
+  // Terminalにログ表示
+  fmt.Println(request.Header.Get("userId"))
+  fmt.Println(ctx.Value("userId"))
+
   //クエリパラメータ
+  /*
   params := request.URL.Query()
   params.Add("userId","Kuno") // 直接指定してみる
   request.URL.RawQuery = params.Encode()
+  */
 
   // Terminalにログ表示
+  /*
   fmt.Println(params) // 'map[userId:[Kuno]]'
   fmt.Println(params["userId"]) // '[Kuno]'
   fmt.Println(request.URL.String())  // '?userId=Kuno'
+  */
 
 
   // MySQLからuserId=Kunoの情報取ってくる
-  rows, err := db.Query("select * from user where user_id = ?", "Kuno")
+  rows, err := db.Query("select * from user where user_id = ?", ctx.Value("userId"))
   for rows.Next() {
     var user User
     err := rows.Scan(&user.User_id, &user.Sex)
@@ -65,7 +83,7 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
       panic(err.Error())
       return
     }
-    fmt.Println(user)
+    //fmt.Println(user)
   }
 
   // Terminalにログ表示
