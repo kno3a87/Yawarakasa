@@ -9,6 +9,7 @@ import (
   "net/http"
 
   "github.com/YawarakasaApp/pkg/api/handler/user"
+  "github.com/YawarakasaApp/pkg/api/middleware"
 )
 
 func Start() {
@@ -19,11 +20,24 @@ func Start() {
 
 func Handler(writer http.ResponseWriter, request *http.Request){
     fmt.Fprintf(writer, "Hello World!")
+
     // エンドポイントの設定
     // HandlerPkg　packageのGetUser関数呼び出し
-    http.HandleFunc("/user/get", HandlerPkg.GetUser)
+    //http.HandleFunc("/user/get", HandlerPkg.GetUser)
 
     // こうなってほしい
-    //http.HandleFunc("/user/get",get(middleware.Authenticate(handler.HandleUserGet())))
+    //http.HandleFunc("/user/get",　get(middleware.Authenticate(handler.HandleUserGet())))
+
+    //http.HandleFunc("/user/get",　get(middleware.Authenticate(HandlerPkg.GetUser))
+    http.HandleFunc("/user/get", middleware.Authenticate(HandlerPkg.HandleUserGet))
     //http.HandleFunc("/user/update",post(middleware.Authenticate(handler.HandleUserUpdate())))
 }
+
+/*
+func get(next http.HandlerFunc) http.HandlerFunc {
+  return func(w http.ResponseWriter, r *http.Request) {
+      fmt.Println("[START] get")
+      next.ServeHTTP(w, r)
+  }
+}
+*/
