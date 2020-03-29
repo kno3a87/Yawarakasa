@@ -19,7 +19,12 @@ type User struct {
 // Init
 var users []User
 
-func GetUser(w http.ResponseWriter, r *http.Request) {
+
+func HandleUserGet(w http.ResponseWriter, r *http.Request) {
+  // context.Context受け取り
+  Ctx := r.Context()
+  fmt.Println(Ctx.Value("userId"))  // log
+
   // json定義
   w.Header().Set("Content-Type", "application/json")
 
@@ -30,25 +35,8 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
   }
   defer db.Close()
 
-  url := ""
-  request, err := http.NewRequest("GET", url, nil)
-  if err != nil{
-    //log.Fatal(err)
-  }
-
-  //クエリパラメータ
-  params := request.URL.Query()
-  params.Add("userId","Kuno") // 直接指定してみる
-  request.URL.RawQuery = params.Encode()
-
-  // Terminalにログ表示
-  fmt.Println(params) // 'map[userId:[Kuno]]'
-  fmt.Println(params["userId"]) // '[Kuno]'
-  fmt.Println(request.URL.String())  // '?userId=Kuno'
-
-
   // MySQLからuserId=Kunoの情報取ってくる
-  rows, err := db.Query("select * from user where user_id = ?", "Kuno")
+  rows, err := db.Query("select * from user where user_id = ?", Ctx.Value("userId"))
   for rows.Next() {
     var user User
     err := rows.Scan(&user.User_id, &user.Sex)
@@ -65,9 +53,9 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
       panic(err.Error())
       return
     }
-    fmt.Println(user)
+    //fmt.Println(user)
   }
 
   // Terminalにログ表示
-  fmt.Println("Endpoint Hit: drawUser")
+  fmt.Println("Endpoint Hit: drawUserGet")
 }
