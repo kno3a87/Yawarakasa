@@ -23,7 +23,7 @@ var users []User
 func HandleUserGet(w http.ResponseWriter, r *http.Request) {
   // context.Context受け取り
   Ctx := r.Context()
-  fmt.Println(Ctx.Value("userId"))  // log
+  fmt.Println(Ctx.Value("userId"))  // debug
 
   // json定義
   w.Header().Set("Content-Type", "application/json")
@@ -36,7 +36,8 @@ func HandleUserGet(w http.ResponseWriter, r *http.Request) {
   defer db.Close()
 
   // MySQLからuserId=Kunoの情報取ってくる
-  rows, err := db.Query("select * from user where user_id = ?", Ctx.Value("userId"))
+  //rows, err := db.Query("select * from user where user_id = ?", Ctx.Value("userId"))
+  rows, err := db.Query("select * from user where user_id = 'baba'") // debug
   for rows.Next() {
     var user User
     err := rows.Scan(&user.User_id, &user.Sex)
