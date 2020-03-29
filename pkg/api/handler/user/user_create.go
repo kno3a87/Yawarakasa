@@ -10,16 +10,6 @@ import (
   "net/http"
 )
 
-/*
-type User struct {
-  User_id string
-  Sex string
-}*/
-
-// Init
-//var users []User
-
-
 func HandleUserCreate(w http.ResponseWriter, r *http.Request) {
 
   // rootで作ったのでパスワードなし
@@ -29,8 +19,15 @@ func HandleUserCreate(w http.ResponseWriter, r *http.Request) {
   }
   defer db.Close()
 
+  url := ""
+  request, err := http.NewRequest("GET", url, nil)
+  // リクエストヘッダに代入
+  request.Header.Set("userId", "baba")
+  request.Header.Add("sex", "f")
+
   // MySQLにユーザ情報登録
-  db.Query("insert into user values ('Kuuko', 'm');")
+  //db.Query("insert into user values ('Kuuko', 'm');") // debug
+  db.Query("insert into user values (?, ?);", request.Header.Get("userId"), request.Header.Get("sex"))
 
   // Terminalにログ表示
   fmt.Println("Endpoint Hit: drawUserCreate")
