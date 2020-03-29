@@ -24,6 +24,7 @@ func Handler(writer http.ResponseWriter, request *http.Request){
     // エンドポイントの設定
     // HandlerPkg　packageのGetUser関数呼び出し
     //http.HandleFunc("/user/get", HandlerPkg.GetUser)
+    http.HandleFunc("/user/create", HandlerPkg.HandleUserCreate)
 
     // こうなってほしい
     //http.HandleFunc("/user/get",　get(middleware.Authenticate(handler.HandleUserGet())))
